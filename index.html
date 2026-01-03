@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iris Prediction</title>
+</head>
+<body>
+<h2>Iris Flower Prediction</h2>
+<form id="irisForm">
+  Sepal Length: <input type="number" step="0.1" id="sepal_length"><br>
+  Sepal Width: <input type="number" step="0.1" id="sepal_width"><br>
+  Petal Length: <input type="number" step="0.1" id="petal_length"><br>
+  Petal Width: <input type="number" step="0.1" id="petal_width"><br>
+  <button type="submit">Predict</button>
+</form>
+<p id="result"></p>
+
+<script>
+document.getElementById('irisForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch('/predict', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            sepal_length: parseFloat(document.getElementById('sepal_length').value),
+            sepal_width: parseFloat(document.getElementById('sepal_width').value),
+            petal_length: parseFloat(document.getElementById('petal_length').value),
+            petal_width: parseFloat(document.getElementById('petal_width').value)
+        })
+    });
+    const data = await response.json();
+    document.getElementById('result').innerText = "Prediction: " + data.prediction;
+}
+</script>
+</body>
+</html>
